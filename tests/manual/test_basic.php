@@ -90,13 +90,13 @@ try {
         color: null,
         deleted: null,
         entities: null,
-        currentLocation: null,
+        currLoc: null,
         transitTo: null,
         brandDetails: null,
         factoryDetails: null,
         availability: null,
         sku: 'ITEM-001',
-        packageQuantity: null,
+        qty: null,
         hardcode: null,
         id: null
     );

@@ -35,7 +35,7 @@ try {
             factoryId: 'factory-789',
             brandId: 'brand-101'
         ),
-        currentLocation: new OperationLocation(
+        currLoc: new OperationLocation(
             id: 'warehouse-1',
             name: 'Main Warehouse',
             details: null
@@ -43,7 +43,7 @@ try {
         transitTo: null,
         availability: null,
         sku: 'ITEM-001',
-        packageQuantity: 10,
+        qty: 10,
         color: new OperationColor(
             id: 'color-123',
             name: 'Red'
@@ -82,13 +82,13 @@ try {
         color: null,
         deleted: null,
         entities: null,
-        currentLocation: null,
+        currLoc: null,
         transitTo: null,
         brandDetails: null,
         factoryDetails: null,
         availability: null,
         sku: 'ITEM-001',
-        packageQuantity: null,
+        qty: null,
         hardcode: null,
         id: null
     );
@@ -107,13 +107,13 @@ try {
         color: null,
         deleted: null,
         entities: null,
-        currentLocation: null,
+        currLoc: null,
         transitTo: null,
         brandDetails: null,
         factoryDetails: null,
         availability: null,
         sku: 'ITEM-001',
-        packageQuantity: null,
+        qty: null,
         hardcode: null,
         id: null
     );
@@ -122,18 +122,18 @@ try {
         color: null,
         deleted: null,
         entities: null,
-        currentLocation: null,
+        currLoc: null,
         transitTo: null,
         brandDetails: null,
         factoryDetails: null,
         availability: null,
         sku: null,
-        packageQuantity: null,
+        qty: null,
         hardcode: null,
         id: null,
         set: [
-            'packageQuantity' => 20,
-            'currentLocation' => [
+            'qty' => 20,
+            'currLoc' => [
                 'id' => 'warehouse-2',
                 'name' => 'Secondary Warehouse'
             ]
@@ -150,7 +150,7 @@ try {
     // Uncomment to actually find one item (requires valid API credentials)
     // $item = RaukInventory::findOne($query);
     // if ($item !== null) {
-    //     echo "Found item: " . $item->sku . " at " . $item->currentLocation->name . "\n";
+    //     echo "Found item: " . $item->sku . " at " . $item->currLoc->name . "\n";
     // } else {
     //     echo "Item not found\n";
     // }

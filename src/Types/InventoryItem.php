@@ -12,13 +12,13 @@ readonly class InventoryItem
     public function __construct(
         public ?string $hardcode,
         public Entities $entities,
-        public Location $currentLocation,
+        public Location $currLoc,
         public ?TransitTo $transitTo,
         /** @var array<string, StatusDetails> */
         public array $availability,
         public string $sku,
         public ?BrandDetails $brandDetails,
-        public int $packageQuantity,
+        public int $qty,
         public Color $color,
         public ?FactoryDetails $factoryDetails,
         public Deleted $deleted,
@@ -37,7 +37,7 @@ readonly class InventoryItem
         return new self(
             hardcode: $data['hardcode'] ?? null,
             entities: Entities::fromArray($data['entities']),
-            currentLocation: Location::fromArray($data['currentLocation']),
+            currLoc: Location::fromArray($data['currLoc']),
             transitTo: isset($data['transitTo']) ? TransitTo::fromArray($data['transitTo']) : null,
             availability: array_map(
                 fn($k, $v) => StatusDetails::fromArray($v),
@@ -46,7 +46,7 @@ readonly class InventoryItem
             ),
             sku: $data['sku'],
             brandDetails: isset($data['brandDetails']) ? BrandDetails::fromArray($data['brandDetails']) : null,
-            packageQuantity: $data['packageQuantity'],
+            qty: $data['qty'],
             color: Color::fromArray($data['color']),
             factoryDetails: isset($data['factoryDetails']) ? FactoryDetails::fromArray($data['factoryDetails']) : null,
             deleted: Deleted::fromArray($data['deleted']),
@@ -68,7 +68,7 @@ readonly class InventoryItem
         return [
             'hardcode' => $this->hardcode,
             'entities' => $this->entities->toArray(),
-            'currentLocation' => $this->currentLocation->toArray(),
+            'currLoc' => $this->currLoc->toArray(),
             'transitTo' => $this->transitTo?->toArray(),
             'availability' => array_map(
                 fn(StatusDetails $details) => $details->toArray(),
@@ -76,7 +76,7 @@ readonly class InventoryItem
             ),
             'sku' => $this->sku,
             'brandDetails' => $this->brandDetails?->toArray(),
-            'packageQuantity' => $this->packageQuantity,
+            'qty' => $this->qty,
             'color' => $this->color->toArray(),
             'factoryDetails' => $this->factoryDetails?->toArray(),
             'deleted' => $this->deleted->toArray(),

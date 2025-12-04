@@ -65,7 +65,7 @@ $newItem = new OperationCreateItem(
         factoryId: 'factory-789',
         brandId: 'brand-101'
     ),
-    currentLocation: new OperationLocation(
+    currLoc: new OperationLocation(
         id: 'warehouse-1',
         name: 'Main Warehouse',
         details: null
@@ -73,7 +73,7 @@ $newItem = new OperationCreateItem(
     transitTo: null,
     availability: null,
     sku: 'ITEM-001',
-    packageQuantity: 10,
+    qty: 10,
     color: new OperationColor(
         id: 'color-123',
         name: 'Red'
@@ -106,13 +106,13 @@ $query = new OperationQuery(
     color: null,
     deleted: null,
     entities: null,
-    currentLocation: null,
+    currLoc: null,
     transitTo: null,
     brandDetails: null,
     factoryDetails: null,
     availability: null,
     sku: 'ITEM-001',
-    packageQuantity: null,
+    qty: null,
     hardcode: null,
     id: null
 );
@@ -143,18 +143,18 @@ $update = new OperationUpdateItem(
     color: null,
     deleted: null,
     entities: null,
-    currentLocation: null,
+    currLoc: null,
     transitTo: null,
     brandDetails: null,
     factoryDetails: null,
     availability: null,
     sku: null,
-    packageQuantity: null,
+    qty: null,
     hardcode: null,
     id: null,
     set: [
-        'packageQuantity' => 20,
-        'currentLocation' => [
+        'qty' => 20,
+        'currLoc' => [
             'id' => 'warehouse-2',
             'name' => 'Secondary Warehouse'
         ]
@@ -182,8 +182,8 @@ $items = RaukInventory::find($query, $options);
 
 // Batch updates
 $batchUpdates = [
-    [new OperationQuery(sku: 'ITEM-001'), new OperationUpdateItem(set: ['packageQuantity' => 15])],
-    [new OperationQuery(sku: 'ITEM-002'), new OperationUpdateItem(set: ['currentLocation' => ['id' => 'warehouse-3']])]
+    [new OperationQuery(sku: 'ITEM-001'), new OperationUpdateItem(set: ['qty' => 15])],
+    [new OperationQuery(sku: 'ITEM-002'), new OperationUpdateItem(set: ['currLoc' => ['id' => 'warehouse-3']])]
 ];
 
 RaukInventory::updateBatch($batchUpdates);

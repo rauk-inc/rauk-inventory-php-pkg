@@ -116,13 +116,13 @@ class RaukInventoryTest extends TestCase
             color: null,
             deleted: null,
             entities: null,
-            currentLocation: null,
+            currLoc: null,
             transitTo: null,
             brandDetails: null,
             factoryDetails: null,
             availability: null,
             sku: 'ITEM-001',
-            packageQuantity: null,
+            qty: null,
             hardcode: null,
             id: null
         );
@@ -136,19 +136,19 @@ class RaukInventoryTest extends TestCase
             color: null,
             deleted: null,
             entities: null,
-            currentLocation: null,
+            currLoc: null,
             transitTo: null,
             brandDetails: null,
             factoryDetails: null,
             availability: null,
             sku: null,
-            packageQuantity: null,
+            qty: null,
             hardcode: null,
             id: null,
-            set: ['packageQuantity' => 20]
+            set: ['qty' => 20]
         );
 
-        $this->assertEquals(['packageQuantity' => 20], $updateItem->set);
+        $this->assertEquals(['qty' => 20], $updateItem->set);
     }
 
     public function testCanCreateRequestOptions(): void
@@ -172,13 +172,13 @@ class RaukInventoryTest extends TestCase
             color: null,
             deleted: null,
             entities: null,
-            currentLocation: null,
+            currLoc: null,
             transitTo: null,
             brandDetails: null,
             factoryDetails: null,
             availability: null,
             sku: 'ITEM-001',
-            packageQuantity: null,
+            qty: null,
             hardcode: null,
             id: null
         );
@@ -195,12 +195,12 @@ class RaukInventoryTest extends TestCase
             'color' => null,
             'deleted' => null,
             'entities' => null,
-            'currentLocation' => null,
+            'currLoc' => null,
             'transitTo' => null,
             'brandDetails' => null,
             'factoryDetails' => null,
             'availability' => null,
-            'packageQuantity' => null,
+            'qty' => null,
             'hardcode' => null,
             'id' => null
         ];
