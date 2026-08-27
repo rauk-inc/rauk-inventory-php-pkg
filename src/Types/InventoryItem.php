@@ -19,7 +19,7 @@ readonly class InventoryItem
         public string $sku,
         public ?BrandDetails $brandDetails,
         public int $qty,
-        public Color $color,
+        public Variant $variant,
         public ?FactoryDetails $factoryDetails,
         public Deleted $deleted,
         /** @var LocationHistoryEntry[]|null */
@@ -47,7 +47,9 @@ readonly class InventoryItem
             sku: $data['sku'],
             brandDetails: isset($data['brandDetails']) ? BrandDetails::fromArray($data['brandDetails']) : null,
             qty: $data['qty'],
-            color: Color::fromArray($data['color']),
+            variant: isset($data['variant'])
+                ? Variant::fromArray($data['variant'])
+                : throw new \InvalidArgumentException('variant is required (color is not accepted; hard-cut, no alias)'),
             factoryDetails: isset($data['factoryDetails']) ? FactoryDetails::fromArray($data['factoryDetails']) : null,
             deleted: Deleted::fromArray($data['deleted']),
             locationHistory: array_map(
@@ -77,7 +79,7 @@ readonly class InventoryItem
             'sku' => $this->sku,
             'brandDetails' => $this->brandDetails?->toArray(),
             'qty' => $this->qty,
-            'color' => $this->color->toArray(),
+            'variant' => $this->variant->toArray(),
             'factoryDetails' => $this->factoryDetails?->toArray(),
             'deleted' => $this->deleted->toArray(),
             'locationHistory' => array_map(
@@ -215,9 +217,9 @@ readonly class BrandDetails
 }
 
 /**
- * Color information
+ * Variant information (replaces former Color; hard-cut, no alias)
  */
-readonly class Color
+readonly class Variant
 {
     public function __construct(
         public ?string $id,
@@ -311,6 +313,8 @@ readonly class StatusDetails
         public ?DateTimeImmutable $date,
         public ?bool $temporary,
         public ?DateTimeImmutable $expiration,
+        /** When set, only this many of the item's qty are in this status (reserve-N-of-M). */
+        public ?int $qty = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -320,6 +324,7 @@ readonly class StatusDetails
             date: isset($data['date']) ? new DateTimeImmutable($data['date']) : null,
             temporary: $data['temporary'] ?? null,
             expiration: isset($data['expiration']) ? new DateTimeImmutable($data['expiration']) : null,
+            qty: isset($data['qty']) ? (int) $data['qty'] : null,
         );
     }
 
@@ -330,6 +335,7 @@ readonly class StatusDetails
             'date' => $this->date?->format('c'),
             'temporary' => $this->temporary,
             'expiration' => $this->expiration?->format('c'),
+            'qty' => $this->qty,
         ], fn($value) => $value !== null);
     }
 }

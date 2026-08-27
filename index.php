@@ -7,7 +7,7 @@ use RaukInventory\Types\OperationCreateItem;
 use RaukInventory\Types\OperationQuery;
 use RaukInventory\Types\OperationUpdateItem;
 use RaukInventory\Types\OperationRequestOptions;
-use RaukInventory\Types\OperationColor;
+use RaukInventory\Types\OperationVariant;
 use RaukInventory\Types\OperationBrandDetails;
 use RaukInventory\Types\OperationFactoryDetails;
 use RaukInventory\Types\OperationEntities;
@@ -44,8 +44,8 @@ try {
         availability: null,
         sku: 'ITEM-001',
         qty: 10,
-        color: new OperationColor(
-            id: 'color-123',
+        variant: new OperationVariant(
+            id: 'variant-123',
             name: 'Red'
         ),
         brandDetails: new OperationBrandDetails(
@@ -65,7 +65,7 @@ try {
     );
 
     $options = new OperationRequestOptions(
-        select: ['sku' => 1, 'color' => 1],
+        select: ['sku' => 1, 'variant' => 1],
         limit: null,
         sort: null,
         includeDeleted: null
@@ -79,7 +79,7 @@ try {
     echo "\nFinding items by SKU...\n";
 
     $query = new OperationQuery(
-        color: null,
+        variant: null,
         deleted: null,
         entities: null,
         currLoc: null,
@@ -97,14 +97,14 @@ try {
     // $items = RaukInventory::find($query);
     // echo "Found " . count($items) . " items\n";
     // foreach ($items as $item) {
-    //     echo "Item: " . $item->sku . " - " . $item->color->name . "\n";
+    //     echo "Item: " . $item->sku . " - " . $item->variant->name . "\n";
     // }
 
     // Example 3: Update an item
     echo "\nUpdating item...\n";
 
     $updateQuery = new OperationQuery(
-        color: null,
+        variant: null,
         deleted: null,
         entities: null,
         currLoc: null,
@@ -119,7 +119,7 @@ try {
     );
 
     $updateItem = new OperationUpdateItem(
-        color: null,
+        variant: null,
         deleted: null,
         entities: null,
         currLoc: null,

@@ -9,7 +9,7 @@ use RaukInventory\Types\OperationCreateItem;
 use RaukInventory\Types\OperationQuery;
 use RaukInventory\Types\OperationUpdateItem;
 use RaukInventory\Types\OperationRequestOptions;
-use RaukInventory\Types\OperationColor;
+use RaukInventory\Types\OperationVariant;
 use RaukInventory\Types\OperationBrandDetails;
 use RaukInventory\Types\OperationFactoryDetails;
 use RaukInventory\Types\OperationEntities;
@@ -79,7 +79,7 @@ class RaukInventoryTest extends TestCase
     public function testCanCreateOperationObjects(): void
     {
         // Test creating operation objects
-        $color = new OperationColor(id: 'color-123', name: 'Red');
+        $variant = new OperationVariant(id: 'variant-123', name: 'Red');
         $brandDetails = new OperationBrandDetails(
             id: 'brand-101',
             name: 'Test Brand',
@@ -104,7 +104,7 @@ class RaukInventoryTest extends TestCase
             details: null
         );
 
-        $this->assertEquals('Red', $color->name);
+        $this->assertEquals('Red', $variant->name);
         $this->assertEquals('luxury', $brandDetails->type);
         $this->assertEquals('factory-789', $entities->factoryId);
         $this->assertEquals('warehouse-1', $location->id);
@@ -113,7 +113,7 @@ class RaukInventoryTest extends TestCase
     public function testCanCreateQueryObject(): void
     {
         $query = new OperationQuery(
-            color: null,
+            variant: null,
             deleted: null,
             entities: null,
             currLoc: null,
@@ -133,7 +133,7 @@ class RaukInventoryTest extends TestCase
     public function testCanCreateUpdateItemObject(): void
     {
         $updateItem = new OperationUpdateItem(
-            color: null,
+            variant: null,
             deleted: null,
             entities: null,
             currLoc: null,
@@ -154,13 +154,13 @@ class RaukInventoryTest extends TestCase
     public function testCanCreateRequestOptions(): void
     {
         $options = new OperationRequestOptions(
-            select: ['sku' => 1, 'color' => 1],
+            select: ['sku' => 1, 'variant' => 1],
             limit: 10,
             sort: ['createdAt' => -1],
             includeDeleted: false
         );
 
-        $this->assertEquals(['sku' => 1, 'color' => 1], $options->select);
+        $this->assertEquals(['sku' => 1, 'variant' => 1], $options->select);
         $this->assertEquals(10, $options->limit);
         $this->assertEquals(['createdAt' => -1], $options->sort);
         $this->assertFalse($options->includeDeleted);
@@ -169,7 +169,7 @@ class RaukInventoryTest extends TestCase
     public function testCanConvertObjectsToArray(): void
     {
         $query = new OperationQuery(
-            color: null,
+            variant: null,
             deleted: null,
             entities: null,
             currLoc: null,
@@ -192,7 +192,7 @@ class RaukInventoryTest extends TestCase
     {
         $queryData = [
             'sku' => 'ITEM-002',
-            'color' => null,
+            'variant' => null,
             'deleted' => null,
             'entities' => null,
             'currLoc' => null,
