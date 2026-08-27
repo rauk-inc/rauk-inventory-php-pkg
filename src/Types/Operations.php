@@ -8,8 +8,8 @@ use DateTimeImmutable;
  * Operation types for Rauk Inventory API
  */
 
-// Color operation types
-readonly class OperationColor
+// Variant operation types (hard-cut from Color; no color alias)
+readonly class OperationVariant
 {
     public function __construct(
         public ?string $id,
@@ -94,6 +94,8 @@ readonly class OperationStatusDetails
         public ?string $date,
         public ?bool $temporary,
         public ?string $expiration,
+        /** When set, only this many of the item's qty are in this status (reserve-N-of-M). */
+        public ?int $qty = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -103,6 +105,7 @@ readonly class OperationStatusDetails
             date: $data['date'] ?? null,
             temporary: $data['temporary'] ?? null,
             expiration: $data['expiration'] ?? null,
+            qty: isset($data['qty']) ? (int) $data['qty'] : null,
         );
     }
 
@@ -113,6 +116,7 @@ readonly class OperationStatusDetails
             'date' => $this->date,
             'temporary' => $this->temporary,
             'expiration' => $this->expiration,
+            'qty' => $this->qty,
         ], fn($value) => $value !== null);
     }
 }
@@ -302,7 +306,7 @@ readonly class OperationBaseItem
         public ?OperationAvailability $availability,
         public ?string $sku,
         public ?int $qty,
-        public ?OperationColor $color,
+        public ?OperationVariant $variant,
         public ?OperationBrandDetails $brandDetails,
         public ?OperationFactoryDetails $factoryDetails,
         public ?OperationDeleted $deleted,
@@ -320,7 +324,7 @@ readonly class OperationBaseItem
             availability: isset($data['availability']) ? OperationAvailability::fromArray($data['availability']) : null,
             sku: $data['sku'] ?? null,
             qty: $data['qty'] ?? null,
-            color: isset($data['color']) ? OperationColor::fromArray($data['color']) : null,
+            variant: isset($data['variant']) ? OperationVariant::fromArray($data['variant']) : null,
             brandDetails: isset($data['brandDetails']) ? OperationBrandDetails::fromArray($data['brandDetails']) : null,
             factoryDetails: isset($data['factoryDetails']) ? OperationFactoryDetails::fromArray($data['factoryDetails']) : null,
             deleted: isset($data['deleted']) ? OperationDeleted::fromArray($data['deleted']) : null,
@@ -341,7 +345,7 @@ readonly class OperationBaseItem
             'availability' => $this->availability?->toArray(),
             'sku' => $this->sku,
             'qty' => $this->qty,
-            'color' => $this->color?->toArray(),
+            'variant' => $this->variant?->toArray(),
             'brandDetails' => $this->brandDetails?->toArray(),
             'factoryDetails' => $this->factoryDetails?->toArray(),
             'deleted' => $this->deleted?->toArray(),
@@ -364,7 +368,7 @@ readonly class OperationCreateItem extends OperationBaseItem
         ?OperationAvailability $availability,
         string $sku,
         int $qty,
-        OperationColor $color,
+        OperationVariant $variant,
         OperationBrandDetails $brandDetails,
         OperationFactoryDetails $factoryDetails,
         ?OperationDeleted $deleted,
@@ -378,7 +382,7 @@ readonly class OperationCreateItem extends OperationBaseItem
             availability: $availability,
             sku: $sku,
             qty: $qty,
-            color: $color,
+            variant: $variant,
             brandDetails: $brandDetails,
             factoryDetails: $factoryDetails,
             deleted: $deleted,
@@ -398,7 +402,7 @@ readonly class OperationCreateItem extends OperationBaseItem
             availability: $base->availability,
             sku: $base->sku ?? throw new \InvalidArgumentException('sku is required for create operation'),
             qty: $base->qty ?? throw new \InvalidArgumentException('qty is required for create operation'),
-            color: $base->color ?? throw new \InvalidArgumentException('color is required for create operation'),
+            variant: $base->variant ?? throw new \InvalidArgumentException('variant is required for create operation'),
             brandDetails: $base->brandDetails ?? throw new \InvalidArgumentException('brandDetails is required for create operation'),
             factoryDetails: $base->factoryDetails ?? throw new \InvalidArgumentException('factoryDetails is required for create operation'),
             deleted: $base->deleted,
@@ -408,7 +412,7 @@ readonly class OperationCreateItem extends OperationBaseItem
 }
 
 // Query operation types for filtering
-readonly class OperationQueryColor
+readonly class OperationQueryVariant
 {
     public function __construct(
         public ?string $name,
@@ -604,6 +608,8 @@ readonly class OperationQueryStatusDetails
         public ?string $date,
         public ?bool $temporary,
         public ?string $expiration,
+        /** When set, filter by partial qty within this status (reserve-N-of-M). */
+        public ?int $qty = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -613,6 +619,7 @@ readonly class OperationQueryStatusDetails
             date: $data['date'] ?? null,
             temporary: $data['temporary'] ?? null,
             expiration: $data['expiration'] ?? null,
+            qty: isset($data['qty']) ? (int) $data['qty'] : null,
         );
     }
 
@@ -623,6 +630,7 @@ readonly class OperationQueryStatusDetails
             'date' => $this->date,
             'temporary' => $this->temporary,
             'expiration' => $this->expiration,
+            'qty' => $this->qty,
         ], fn($value) => $value !== null);
     }
 }
@@ -658,7 +666,7 @@ readonly class OperationQueryAvailability
 readonly class OperationQuery
 {
     public function __construct(
-        public ?OperationQueryColor $color,
+        public ?OperationQueryVariant $variant,
         public ?OperationQueryDeleted $deleted,
         public ?OperationQueryEntities $entities,
         public ?OperationQueryLocation $currLoc,
@@ -675,7 +683,7 @@ readonly class OperationQuery
     public static function fromArray(array $data): self
     {
         return new self(
-            color: isset($data['color']) ? OperationQueryColor::fromArray($data['color']) : null,
+            variant: isset($data['variant']) ? OperationQueryVariant::fromArray($data['variant']) : null,
             deleted: isset($data['deleted']) ? OperationQueryDeleted::fromArray($data['deleted']) : null,
             entities: isset($data['entities']) ? OperationQueryEntities::fromArray($data['entities']) : null,
             currLoc: isset($data['currLoc']) ? OperationQueryLocation::fromArray($data['currLoc']) : null,
@@ -693,7 +701,7 @@ readonly class OperationQuery
     public function toArray(): array
     {
         return array_filter([
-            'color' => $this->color?->toArray(),
+            'variant' => $this->variant?->toArray(),
             'deleted' => $this->deleted?->toArray(),
             'entities' => $this->entities?->toArray(),
             'currLoc' => $this->currLoc?->toArray(),
@@ -1112,7 +1120,7 @@ readonly class OperationInsertResult
 readonly class OperationUpdateItem
 {
     public function __construct(
-        public ?OperationQueryColor $color,
+        public ?OperationQueryVariant $variant,
         public ?OperationQueryDeleted $deleted,
         public ?OperationQueryEntities $entities,
         public ?OperationQueryLocation $currLoc,
@@ -1131,7 +1139,7 @@ readonly class OperationUpdateItem
     public static function fromArray(array $data): self
     {
         return new self(
-            color: isset($data['color']) ? OperationQueryColor::fromArray($data['color']) : null,
+            variant: isset($data['variant']) ? OperationQueryVariant::fromArray($data['variant']) : null,
             deleted: isset($data['deleted']) ? OperationQueryDeleted::fromArray($data['deleted']) : null,
             entities: isset($data['entities']) ? OperationQueryEntities::fromArray($data['entities']) : null,
             currLoc: isset($data['currLoc']) ? OperationQueryLocation::fromArray($data['currLoc']) : null,
@@ -1150,7 +1158,7 @@ readonly class OperationUpdateItem
     public function toArray(): array
     {
         return array_filter([
-            'color' => $this->color?->toArray(),
+            'variant' => $this->variant?->toArray(),
             'deleted' => $this->deleted?->toArray(),
             'entities' => $this->entities?->toArray(),
             'currLoc' => $this->currLoc?->toArray(),

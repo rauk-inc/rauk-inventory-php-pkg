@@ -8,7 +8,7 @@
 >
     <testsuites>
         <testsuite name="RaukInventory Test Suite">
-            <directory>tests</directory>
+            <directory>tests/units</directory>
         </testsuite>
     </testsuites>
     <source>

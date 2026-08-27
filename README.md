@@ -44,7 +44,7 @@ use RaukInventory\Types\OperationCreateItem;
 use RaukInventory\Types\OperationQuery;
 use RaukInventory\Types\OperationEntities;
 use RaukInventory\Types\OperationLocation;
-use RaukInventory\Types\OperationColor;
+use RaukInventory\Types\OperationVariant;
 use RaukInventory\Types\OperationBrandDetails;
 use RaukInventory\Types\OperationFactoryDetails;
 
@@ -74,8 +74,8 @@ $newItem = new OperationCreateItem(
     availability: null,
     sku: 'ITEM-001',
     qty: 10,
-    color: new OperationColor(
-        id: 'color-123',
+    variant: new OperationVariant(
+        id: 'variant-123',
         name: 'Red'
     ),
     brandDetails: new OperationBrandDetails(
@@ -103,7 +103,7 @@ echo "Created item with ID: " . $createdItem->id . "\n";
 ```php
 // Find items by SKU
 $query = new OperationQuery(
-    color: null,
+    variant: null,
     deleted: null,
     entities: null,
     currLoc: null,
@@ -119,7 +119,7 @@ $query = new OperationQuery(
 
 $items = RaukInventory::find($query);
 foreach ($items as $item) {
-    echo "Item: " . $item->sku . " - " . $item->color->name . "\n";
+    echo "Item: " . $item->sku . " - " . $item->variant->name . "\n";
 }
 
 // Find a single item
@@ -140,7 +140,7 @@ $query = new OperationQuery(
 );
 
 $update = new OperationUpdateItem(
-    color: null,
+    variant: null,
     deleted: null,
     entities: null,
     currLoc: null,
@@ -172,7 +172,7 @@ use RaukInventory\Types\OperationRequestOptions;
 
 // With options (limit, sort, select)
 $options = new OperationRequestOptions(
-    select: ['sku' => 1, 'color' => 1],
+    select: ['sku' => 1, 'variant' => 1],
     limit: 10,
     sort: ['createdAt' => -1],
     includeDeleted: false

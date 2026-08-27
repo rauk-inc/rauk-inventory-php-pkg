@@ -19,7 +19,7 @@ spl_autoload_register(function ($className) {
     // Map namespaces to actual files
     $fileMap = [
         'RaukInventory\Core\RaukInventoryClient' => 'Core/RaukInventoryClient.php',
-        'RaukInventory\Types\OperationColor' => 'Types/Operations.php',
+        'RaukInventory\Types\OperationVariant' => 'Types/Operations.php',
         'RaukInventory\Types\OperationBrandDetails' => 'Types/Operations.php',
         'RaukInventory\Types\OperationFactoryDetails' => 'Types/Operations.php',
         'RaukInventory\Types\OperationEntities' => 'Types/Operations.php',
@@ -62,7 +62,7 @@ try {
 // Test 2: Can create operation objects
 echo "\nTest 2: Creating operation objects...\n";
 try {
-    $color = new RaukInventory\Types\OperationColor(id: 'color-123', name: 'Red');
+    $variant = new RaukInventory\Types\OperationVariant(id: 'variant-123', name: 'Red');
     $brandDetails = new RaukInventory\Types\OperationBrandDetails(
         id: 'brand-101',
         name: 'Test Brand',
@@ -76,7 +76,7 @@ try {
         brandId: 'brand-101'
     );
 
-    echo "✅ OperationColor: {$color->name}\n";
+    echo "✅ OperationVariant: {$variant->name}\n";
     echo "✅ OperationBrandDetails: {$brandDetails->name} ({$brandDetails->type})\n";
     echo "✅ OperationEntities: factory={$entities->factoryId}, brand={$entities->brandId}\n";
 } catch (Exception $e) {
@@ -87,7 +87,7 @@ try {
 echo "\nTest 3: Creating query object...\n";
 try {
     $query = new RaukInventory\Types\OperationQuery(
-        color: null,
+        variant: null,
         deleted: null,
         entities: null,
         currLoc: null,
